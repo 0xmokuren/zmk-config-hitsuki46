@@ -17,11 +17,21 @@
             ;
 };
 
-// Disable trackball_left_listener on central side
-// The peripheral's trackball events will be automatically forwarded to central
-// but we'll handle them through the global input system, not a dedicated listener
+// Configure trackball_left_split to receive data from peripheral's trackball_left
+&trackball_left_split {
+    device = <&trackball_left>;
+};
+
+// Enable trackball_left_listener on central side to process scroll events
 &trackball_left_listener {
-    status = "disabled";
+    status = "okay";
+
+    // Left trackball (from peripheral): always in scroll mode
+    input-processors =
+        <&zip_x_scaler 0 1>,
+        <&zip_y_scaler 1 15>,
+        <&zip_xy_to_scroll_mapper>,
+        <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>;
 };
 
 // Enable and configure trackball_right_listener for local (right) trackball

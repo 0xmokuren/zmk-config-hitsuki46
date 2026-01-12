@@ -2,19 +2,10 @@
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors.dtsi>
 
-// Enable trackball_left_listener on peripheral (left) side
-// Process trackball events into scroll events locally on the peripheral
-// These scroll events will then be forwarded to central automatically
+// Disable trackball_left_listener on peripheral (left) side
+// The trackball data will be automatically forwarded to central via split protocol
 &trackball_left_listener {
-    status = "okay";
-    device = <&trackball_left>;
-
-    // Left trackball: always in scroll mode
-    input-processors =
-        <&zip_x_scaler 0 1>,
-        <&zip_y_scaler 1 15>,
-        <&zip_xy_to_scroll_mapper>,
-        <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>;
+    status = "disabled";
 };
 
 &kscan0 {
