@@ -2,8 +2,8 @@
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors.dtsi>
 
-// Enable and configure trackball_listener for left side (scroll only)
-&trackball_listener {
+// Enable and configure trackball_left_listener for left side (scroll only)
+&trackball_left_listener {
     status = "okay";
     device = <&trackball>;
 

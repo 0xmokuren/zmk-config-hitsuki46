@@ -94,7 +94,12 @@
                 ;
     };
 
-    trackball_listener: trackball_listener {
+    trackball_left_listener: trackball_left_listener {
+        compatible = "zmk,input-listener";
+        status = "disabled";
+    };
+
+    trackball_right_listener: trackball_right_listener {
         compatible = "zmk,input-listener";
         status = "disabled";
     };

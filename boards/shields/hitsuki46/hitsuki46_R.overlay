@@ -17,8 +17,8 @@
             ;
 };
 
-// Enable and configure trackball_listener (defined in dtsi)
-&trackball_listener {
+// Enable and configure trackball_right_listener (defined in dtsi)
+&trackball_right_listener {
     status = "okay";
     device = <&trackball>;
 
