@@ -19,7 +19,6 @@
 
 // Configure trackball_left_split to receive data from peripheral's trackball_left
 &trackball_left_split {
-    device = <&trackball_left>;
 };
 
 // Enable trackball_left_listener on central side to process scroll events

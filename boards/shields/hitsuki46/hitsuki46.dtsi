@@ -2,6 +2,8 @@
 #include <dt-bindings/led/led.h>
 #include <physical_layouts.dtsi>
 
+#define RC(r,c) ((r << 6) | (c))
+
 / {
     chosen {
         zmk,physical-layout = &hitsuki46_physical_layout;
