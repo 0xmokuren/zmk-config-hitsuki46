@@ -7,12 +7,6 @@
     input = <&trackball_left>;
 };
 
-// Disable trackball_left_listener on peripheral (left) side
-// The trackball data will be automatically forwarded to central via split protocol
-&trackball_left_listener {
-    status = "disabled";
-};
-
 &kscan0 {
         col-gpios
             = <&xiao_d 10 GPIO_ACTIVE_HIGH>
