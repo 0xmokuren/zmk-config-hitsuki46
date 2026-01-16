@@ -3,6 +3,14 @@
 #include <dt-bindings/input/input-event-codes.h>
 #include <input/processors.dtsi>
 
+//=============================================================================
+// Trackball Mode Configuration
+// Set to 1 for SCROLL mode, 0 for CURSOR mode
+//=============================================================================
+#define LEFT_TRACKBALL_SCROLL_MODE  1   // Left trackball: 1=scroll, 0=cursor
+#define RIGHT_TRACKBALL_SCROLL_MODE 0   // Right trackball: 1=scroll, 0=cursor
+//=============================================================================
+
 &default_transform {
     col-offset = <6>;
 };
@@ -33,41 +41,61 @@
     };
 };
 
-// Enable trackball_left_listener on central side to process scroll events
+// Left trackball listener (from peripheral)
 / {
     trackball_left_listener: trackball_left_listener {
         compatible = "zmk,input-listener";
         status = "okay";
         device = <&trackball_left_split>;
 
-        // Left trackball (from peripheral): always in scroll mode
-        // XY clipper ensures only dominant axis is used for cleaner scrolling
+#if LEFT_TRACKBALL_SCROLL_MODE
+        // SCROLL MODE: Always scroll
         input-processors =
             <&xy_clipper>,
             <&zip_xy_to_scroll_mapper>,
-            <&zip_scroll_scaler 1 5>;
+            <&zip_scroll_scaler 2 5>;
+#else
+        // CURSOR MODE: Normal cursor with auto mouse layer
+        input-processors = <&zip_temp_layer 1 700>;
+
+        // Optional: Enable scroll on layer 5
+        scroller {
+            layers = <5>;
+            input-processors =
+                <&xy_clipper>,
+                <&zip_xy_to_scroll_mapper>,
+                <&zip_scroll_scaler 2 5>;
+        };
+#endif
     };
 };
 
-// Enable and configure trackball_right_listener for local (right) trackball
+// Right trackball listener (local)
 &trackball_right_listener {
     status = "okay";
     device = <&trackball>;
 
-    // Auto mouse layer: automatically activate layer 1 when trackball moves
-    // Timeout: 700ms (matching original CONFIG_PMW3610_AUTOMOUSE_TIMEOUT_MS)
+#if RIGHT_TRACKBALL_SCROLL_MODE
+    // SCROLL MODE: Always scroll
+    input-processors =
+        <&xy_clipper>,
+        <&zip_xy_to_scroll_mapper>,
+        <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
+        <&zip_scroll_scaler 2 5>;
+#else
+    // CURSOR MODE: Normal cursor with auto mouse layer
     input-processors = <&zip_temp_layer 1 700>;
 
-    // Scroll mode: convert XY movement to scroll events on layer 5
-    // XY clipper ensures only dominant axis is used for cleaner scrolling
+    // Enable scroll on layer 5
     scroller {
         layers = <5>;
         input-processors =
             <&xy_clipper>,
             <&zip_xy_to_scroll_mapper>,
             <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
-            <&zip_scroll_scaler 1 5>;
+            <&zip_scroll_scaler 2 5>;
     };
+#endif
 };
 
 &pinctrl {
