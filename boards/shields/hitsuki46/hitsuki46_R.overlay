@@ -28,6 +28,8 @@
         compatible = "zmk,input-processor-xy-clipper";
         #input-processor-cells = <0>;
         threshold = <20>;  // Values below this threshold on the weaker axis are clipped
+        invert-x = <0>;
+        invert-y = <0>;
     };
 };
 
