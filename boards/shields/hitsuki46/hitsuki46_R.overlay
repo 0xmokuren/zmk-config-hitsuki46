@@ -2,13 +2,17 @@
 #include <dt-bindings/zmk/input_transform.h>
 #include <dt-bindings/input/input-event-codes.h>
 #include <input/processors.dtsi>
+#include <mouse-gesture.dtsi>
+#include <dt-bindings/zmk/pointing.h>
 
 //=============================================================================
 // Trackball Mode Configuration
-// Set to 1 for SCROLL mode, 0 for CURSOR mode
+// 0 = CURSOR mode (mouse cursor movement)
+// 1 = SCROLL mode (scroll operation)
+// 2 = GESTURE mode (up/down=scroll, left=backspace, right=delete)
 //=============================================================================
-#define LEFT_TRACKBALL_SCROLL_MODE  1   // Left trackball: 1=scroll, 0=cursor
-#define RIGHT_TRACKBALL_SCROLL_MODE 0   // Right trackball: 1=scroll, 0=cursor
+#define LEFT_TRACKBALL_MODE  0   // Left trackball mode (0/1/2)
+#define RIGHT_TRACKBALL_MODE 2   // Right trackball mode (0/1/2)
 //=============================================================================
 
 &default_transform {
@@ -41,6 +45,33 @@
     };
 };
 
+// Mouse Gesture Configuration for GESTURE mode
+// Up/Down = Scroll, Left = Backspace, Right = Delete
+&zip_mouse_gesture {
+    stroke-size = <200>;
+    enable-eager-mode;
+
+    gesture_scroll_up {
+        pattern = <GESTURE_UP>;
+        bindings = <&msc SCRL_UP>;
+    };
+
+    gesture_scroll_down {
+        pattern = <GESTURE_DOWN>;
+        bindings = <&msc SCRL_DOWN>;
+    };
+
+    gesture_backspace {
+        pattern = <GESTURE_LEFT>;
+        bindings = <&kp BACKSPACE>;
+    };
+
+    gesture_delete {
+        pattern = <GESTURE_RIGHT>;
+        bindings = <&kp DELETE>;
+    };
+};
+
 // Left trackball listener (from peripheral)
 / {
     trackball_left_listener: trackball_left_listener {
@@ -48,7 +79,10 @@
         status = "okay";
         device = <&trackball_left_split>;
 
-#if LEFT_TRACKBALL_SCROLL_MODE
+#if LEFT_TRACKBALL_MODE == 2
+        // GESTURE MODE: Up/Down=scroll, Left=backspace, Right=delete
+        input-processors = <&zip_mouse_gesture>;
+#elif LEFT_TRACKBALL_MODE == 1
         // SCROLL MODE: Always scroll
         input-processors =
             <&xy_clipper>,
@@ -75,7 +109,10 @@
     status = "okay";
     device = <&trackball>;
 
-#if RIGHT_TRACKBALL_SCROLL_MODE
+#if RIGHT_TRACKBALL_MODE == 2
+    // GESTURE MODE: Up/Down=scroll, Left=backspace, Right=delete
+    input-processors = <&zip_mouse_gesture>;
+#elif RIGHT_TRACKBALL_MODE == 1
     // SCROLL MODE: Always scroll
     input-processors =
         <&xy_clipper>,
