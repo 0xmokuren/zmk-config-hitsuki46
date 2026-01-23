@@ -166,9 +166,14 @@
         // Invert Y axis only (X axis is correct without inversion)
         invert-y;
 
-        // Power management
-        // NOTE: force-awake was removed to fix cursor drift issue when idle
-        // The sensor will now use normal downshift mode (RUN -> REST1 -> REST2 -> REST3)
+        // Power management - enable force-awake to fix freeze and wake issues
+        // When ZMK is ACTIVE, sensor stays in RUN mode for responsive cursor
+        // When ZMK enters IDLE/SLEEP, sensor falls back to normal downshift mode
+        // This also makes the sensor a wakeup-source via IRQ
+        force-awake;
+
+        // Enable wakeup from sleep via trackball motion
+        wakeup-source;
     };
 };
 
