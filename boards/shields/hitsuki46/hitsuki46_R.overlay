@@ -10,7 +10,7 @@
 // 1 = SCROLL mode (scroll operation)
 //=============================================================================
 #define LEFT_TRACKBALL_MODE  0   // Left trackball mode (0/1)
-#define RIGHT_TRACKBALL_MODE 1   // Right trackball mode (0/1)
+#define RIGHT_TRACKBALL_MODE 0   // Right trackball mode (0/1)
 //=============================================================================
 
 &default_transform {
