@@ -99,10 +99,10 @@
 
         NUM_AND_FUC {
             bindings = <
-&trans  &kp N1            &kp N2             &kp N3          &kp N4           &kp N5         &kp N6  &kp N7        &kp N8        &kp N9        &kp N0      &trans
-&trans  &trans            &trans             &trans          &trans           &kp BACKSLASH  &trans  &kp N4        &kp N5        &kp N6        &kp MINUS   &kp SLASH
-&trans  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp LEFT_BRACE  &kp RIGHT_BRACE  &kp PIPE       &trans  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp PLUS    &kp ASTERISK
-        &trans            &trans             &trans          &trans           &trans         &trans  &kp NUMBER_0  &trans        &trans        &kp PERIOD
+&trans  &kp N1            &kp N2             &kp N3          &kp N4           &kp N5         &kp N6  &kp N7  &kp N8  &kp N9  &kp N0      &trans
+&trans  &trans            &trans             &trans          &trans           &kp BACKSLASH  &trans  &trans  &trans  &trans  &kp MINUS   &kp SLASH
+&trans  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp LEFT_BRACE  &kp RIGHT_BRACE  &kp PIPE       &trans  &trans  &trans  &trans  &kp PLUS    &kp ASTERISK
+        &trans            &trans             &trans          &trans           &trans         &trans  &trans  &trans  &trans  &kp PERIOD
             >;
         };
 
