@@ -57,11 +57,19 @@
     };
 };
 
-// Override led_strip to set blue color
+// Override led_strip
 &led_strip {
     status = "okay";
     chain-length = <1>;
-    // Pre-set WS2812 to blue color (0x0000FF)
+};
+
+// Invert ext-power GPIO polarity to cut LED power on peripheral side.
+// P-ch MOSFET: GPIO HIGH = gate HIGH = MOSFET OFF = LED unpowered.
+// ext-power defaults to ON state, so with ACTIVE_HIGH:
+//   ON (default) → GPIO HIGH → MOSFET OFF → no power to LED
+// This prevents SPI noise on P0.19 from lighting the WS2812.
+&led_power {
+    control-gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
 };
 
 &xiao_serial { status = "disabled"; };
