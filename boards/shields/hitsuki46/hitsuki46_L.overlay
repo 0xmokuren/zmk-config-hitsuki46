@@ -57,7 +57,7 @@
 
 // Override led_strip to set blue color
 &led_strip {
-    status = "okay";
+    status = "disabled";
     chain-length = <1>;
     // Pre-set WS2812 to blue color (0x0000FF)
 };
