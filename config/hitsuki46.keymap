@@ -10,6 +10,12 @@
     quick-tap-ms = <0>;
 };
 
+&lt {
+    flavor = "balanced";
+    quick-tap-ms = <175>;
+    require-prior-idle-ms = <150>;
+};
+
 // &trackball {
 //     // Note: automouse-layer and scroll-layers are no longer supported in badjeff/zmk-pmw3610-driver
 //     // These features should now be configured using layer-based zmk,input-listener in keymap
