@@ -153,7 +153,12 @@
         status = "okay";
         compatible = "pixart,pmw3610-alt";
         reg = <0>;
-        spi-max-frequency = <2000000>;
+        // Diagnostic: lowered 2MHz -> 1MHz to test whether SPI signal integrity
+        // is behind the "cursor jitter + occasional jump while moving" symptom.
+        // The badjeff driver has no per-sample sanity/clamp, so a single corrupted
+        // SPI byte becomes a spurious large delta. Revert to <2000000> if it makes
+        // no difference to the jumps.
+        spi-max-frequency = <1000000>;
         irq-gpios = <&gpio1 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
         evt-type = <2>;  // INPUT_EV_REL - relative movement events for mouse
         x-input-code = <0>;  // INPUT_REL_X
