@@ -42,7 +42,11 @@
             psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
                 <NRF_PSEL(SPIM_MOSI, 0, 19)>,
                 <NRF_PSEL(SPIM_MISO, 0, 19)>;
-            bias-pull-down;  // Hold WS2812 data line LOW when SPI1 is idle to prevent noise
+            // Internal ~13k pull-down on DIN. Too weak alone: while SPI1 is enabled the
+            // nRF SPIM drives MOSI (P0.19) push-pull and overrides it -- this is why every
+            // pull-down attempt failed and LED power is cut via &led_power instead. A real
+            // lit-LED fix needs an external ~10k pull-down on DIN to GND (hardware change).
+            bias-pull-down;
         };
     };
 
@@ -52,7 +56,7 @@
                 <NRF_PSEL(SPIM_MOSI, 0, 19)>,
                 <NRF_PSEL(SPIM_MISO, 0, 19)>;
             low-power-enable;
-            bias-pull-down;  // Hold WS2812 data line LOW during sleep
+            bias-pull-down;  // Internal pull-down during sleep (weak; see spi1_default note).
         };
     };
 };
@@ -68,6 +72,9 @@
 // ext-power defaults to ON state, so with ACTIVE_HIGH:
 //   ON (default) → GPIO HIGH → MOSFET OFF → no power to LED
 // This prevents SPI noise on P0.19 from lighting the WS2812.
+// To RE-ENABLE the left LED you must first add an external ~10k pull-down on the DIN
+// (P0.19) net to GND (firmware alone cannot hold the push-pull-driven line low); then
+// revert this to GPIO_ACTIVE_LOW (the dtsi default) to re-power the strip.
 &led_power {
     control-gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
 };
