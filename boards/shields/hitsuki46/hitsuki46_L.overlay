@@ -84,7 +84,7 @@
 
     trackball_left: trackball@0 {
         status = "okay";
-        compatible = "pixart,pmw3610-alt";
+        compatible = "pixart,pmw3610-efogtech";
         reg = <0>;
         label = "TRACKBALL_LEFT";
         spi-max-frequency = <2000000>;
@@ -97,8 +97,8 @@
         cpi = <800>;
 
         // 180 degree orientation (invert both X and Y)
-        invert-x;
-        invert-y;
+        x-invert;
+        y-invert;
 
         // Power management
         // NOTE: force-awake was removed to fix cursor drift issue when idle
