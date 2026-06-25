@@ -1,4 +1,12 @@
 # ZMK Config for hitsuki46 - Zephyr 4.1
+#
+# 依存はすべて SHA でピン留めしている。理由:
+# 以前 revision: main のままビルドしていたところ、2026-06-02 を最後に
+# BLE が不安定（接続中にフリーズ→切断、復帰にホスト再ペアが必要）になった。
+# 2026-06-02 時点の最終安定ビルド (run 26823849612, sha 7b9398b) の依存 SHA に
+# 戻したところ症状が消えたため、上流 main のいずれかの変更が回帰要因と判定。
+# 上流 main に振り回されないよう、再現性を確保するため SHA ピンを維持する。
+# 依存を更新する際は、その都度ビルドを試して安定性を再確認してから上げること。
 manifest:
   remotes:
     - name: zmkfirmware
@@ -14,19 +22,19 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: main
+      revision: 26246da1b69733b224a33d82b33750541cd5933a
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: badjeff
-      revision: main
+      revision: 44b4a76b74d293a93cec4ccb7e04cb8d29c10f93
     - name: zmk-feature-non-lipo-battery-management
       remote: sekigon-gonnoc
-      revision: main
+      revision: aa5b958ec6497f6057a1dfce5e731396aaf88374
     - name: zmk-ws2812-driver
       remote: gohanda11
-      revision: main
+      revision: 7d9944d7b616f5b08692371738445f895891a43a
     - name: zmk-feature-xy_clipper
       remote: iwk7273
-      revision: main
+      revision: 1e9a7957e1dae685bdcbf39459b32956b3a14661
   self:
     path: config
