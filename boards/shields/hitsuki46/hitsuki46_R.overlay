@@ -151,7 +151,7 @@
 
     trackball: trackball@0 {
         status = "okay";
-        compatible = "pixart,pmw3610-alt";
+        compatible = "pixart,pmw3610-efogtech";
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio1 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
@@ -163,7 +163,7 @@
         cpi = <800>;
 
         // Invert Y axis only (X axis is correct without inversion)
-        invert-y;
+        y-invert;
 
         // Power management - enable force-awake to fix freeze and wake issues
         // When ZMK is ACTIVE, sensor stays in RUN mode for responsive cursor
