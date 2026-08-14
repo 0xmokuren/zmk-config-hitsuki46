@@ -7,6 +7,13 @@
 # 戻したところ症状が消えたため、上流 main のいずれかの変更が回帰要因と判定。
 # 上流 main に振り回されないよう、再現性を確保するため SHA ピンを維持する。
 # 依存を更新する際は、その都度ビルドを試して安定性を再確認してから上げること。
+#
+# 注意: zmk の app/west.yml が import する zephyr はブランチ指定
+# (v4.1.0+zmk-fixes) なので、zmk 本体を SHA 固定してもすり抜けて動く。
+# 実際に 2026-06-24 の zephyr 1d1eb5d9 (PM slots revert) がピンを
+# すり抜けて入り、BLE 不安定の疑いが濃い（2026-07-08 調査）。
+# そのため下の zephyr エントリで import 側の定義を上書きして SHA 固定する
+# （トップレベル manifest の定義が import された定義より優先される）。
 manifest:
   remotes:
     - name: zmkfirmware
@@ -24,6 +31,32 @@ manifest:
       remote: zmkfirmware
       revision: 26246da1b69733b224a33d82b33750541cd5933a
       import: app/west.yml
+    # zephyr を 2026-06-02 安定ビルドと同一の SHA に固定（app/west.yml の
+    # ブランチ指定を上書き）。import 設定は app/west.yml の zephyr エントリと
+    # 同一にしておくこと（HAL 等のモジュール取り込みに必要）。
+    - name: zephyr
+      remote: zmkfirmware
+      revision: 58a5874a446ace2893a196848282d271a551e512
+      clone-depth: 1
+      import:
+        name-blocklist:
+          - ci-tools
+          - hal_altera
+          - hal_cypress
+          - hal_infineon
+          - hal_microchip
+          - hal_nxp
+          - hal_openisa
+          - hal_xtensa
+          - hal_st
+          - hal_ti
+          - loramac-node
+          - mcuboot
+          - mcumgr
+          - net-tools
+          - openthread
+          - edtt
+          - trusted-firmware-m
     - name: zmk-pmw3610-driver
       remote: badjeff
       revision: 44b4a76b74d293a93cec4ccb7e04cb8d29c10f93
